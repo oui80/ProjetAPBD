@@ -1,0 +1,38 @@
+services:
+  app:
+    build: .
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: postgres://pace:pace@db:5432/pace_lab
+      APP_ORIGIN: http://localhost:3000
+      SESSION_TTL_HOURS: 168
+      COOKIE_SECURE: "false"
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/api/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: pace_lab
+      POSTGRES_USER: pace
+      POSTGRES_PASSWORD: pace
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pace -d pace_lab"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  postgres_data:
