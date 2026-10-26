@@ -6,7 +6,6 @@ Au MVP, cette page reste simple. Elle affiche :
 
 - retour vers l’historique ;
 - nom, date et sport ;
-- source de l’activité ;
 - distance, durée, allure ou vitesse ;
 - dénivelé, fréquence cardiaque et puissance si disponibles.
 
@@ -24,7 +23,7 @@ La page accueillera des tuiles indépendantes. Chaque tuile correspondra à une 
 - tours et intervalles ;
 - analyse de montée.
 
-Une tuile doit pouvoir être ajoutée ou retirée sans modifier les autres. Si ses données sont absentes, elle affiche une courte explication ou n’est pas proposée.
+Une tuile doit pouvoir être ajoutée ou retirée sans modifier les autres. Elle présente le résultat, une explication courte, la qualité des données et la méthode employée. Si ses données sont absentes, elle explique pourquoi elle n’est pas calculable.
 
 ## Direction visuelle
 

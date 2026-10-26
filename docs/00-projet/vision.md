@@ -1,6 +1,6 @@
 # Vision
 
-L’application permet à un petit groupe d’utilisateurs de centraliser simplement leurs activités sportives.
+L’application est un petit laboratoire personnel permettant de centraliser et, plus tard, d’analyser des activités sportives.
 
 ## Besoin principal
 
@@ -18,6 +18,7 @@ Un utilisateur doit pouvoir :
 - Interface sobre et facile à comprendre.
 - Aucune donnée sportive inventée.
 - Analyses ajoutées progressivement après le MVP.
+- Les analyses restent descriptives : elles montrent ce qui change sans prétendre expliquer une cause physiologique.
 
 ## Utilisateurs
 

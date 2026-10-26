@@ -13,7 +13,7 @@ Afficher les activités de l’utilisateur et permettre l’import de fichiers F
 
 ## Contenu
 
-Chaque activité est présentée dans une carte contenant, lorsqu’elles existent :
+Les activités sont présentées dans une liste compacte. Chaque carte contient, lorsqu’elles existent :
 
 - nom ;
 - date ;
@@ -24,11 +24,10 @@ Chaque activité est présentée dans une carte contenant, lorsqu’elles existe
 - dénivelé ;
 - fréquence cardiaque moyenne ;
 - puissance moyenne ;
-- source.
 
 L’utilisateur peut rechercher une activité, filtrer par sport et trier par date.
 
-Le bouton Intervals.icu récupère les nouvelles activités et télécharge leurs fichiers. Il affiche la dernière synchronisation et un bilan simple : importées, déjà présentes, ignorées ou en erreur.
+Le bouton Intervals.icu récupère les nouvelles activités et télécharge leurs FIT. Il affiche la dernière synchronisation et un bilan simple : importées, déjà présentes, ignorées ou en erreur.
 
 ## États
 
@@ -44,6 +43,6 @@ Les cartes utilisent plusieurs colonnes sur grand écran et une seule colonne su
 ## Critères d’acceptation
 
 - Seules les activités de l’utilisateur connecté sont visibles.
-- La source et les données principales sont faciles à lire.
+- Les données principales sont faciles à lire.
 - Une donnée absente ne laisse pas croire qu’elle vaut zéro.
 - Un clic sur une carte ouvre son détail.

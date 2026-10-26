@@ -27,12 +27,10 @@ Ce document est la source de vérité fonctionnelle.
 | ANA-003 | Carte GPS | **HORS MVP** |
 | ANA-004 | Comparaison de tours ou intervalles | **HORS MVP** |
 | ICU-001 | Synchronisation des activités Intervals.icu | **VALIDÉ** |
-| ICU-002 | Téléchargement du fichier original ou du FIT généré | **VALIDÉ** |
+| ICU-002 | Téléchargement des FIT depuis l’API | **VALIDÉ** |
 
 ## Règles
 
 - Une métrique absente reste absente.
-- La source de chaque activité est affichée.
 - L’ajout futur d’une analyse ne doit pas modifier l’import ou l’historique.
 - Le fonctionnement FIT reste utilisable sans Intervals.icu.
-- La provenance distingue un FIT original d’un FIT généré par Intervals.icu.

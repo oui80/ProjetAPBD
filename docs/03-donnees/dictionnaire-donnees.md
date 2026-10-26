@@ -14,7 +14,6 @@
 | Dénivelé | Mètres |
 | Fréquence cardiaque | Battements par minute |
 | Puissance | Watts |
-| Source | Import local ou Intervals.icu |
 
 ## Échantillon
 

@@ -9,4 +9,4 @@
 | Tuile d’analyse | Module indépendant ajouté après le MVP. |
 | Donnée brute | Valeur provenant directement du fichier ou d’une source. |
 | Donnée calculée | Résultat produit à partir des données brutes. |
-| Source | Origine de l’activité, par exemple import local ou Intervals.icu. |
+| Synchronisation | Import automatique de FIT depuis Intervals.icu. |

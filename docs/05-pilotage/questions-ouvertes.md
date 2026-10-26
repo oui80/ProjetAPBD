@@ -2,12 +2,16 @@
 
 Le projet ne doit pas être ralenti par des choix secondaires.
 
-## Point à préparer
+## Points utiles après le MVP
 
-L’application OAuth Intervals.icu doit être enregistrée et approuvée avant que plusieurs utilisateurs puissent connecter leur compte.
+- Valider ou remplacer le nom de travail « PACE / LAB ».
+- Choisir la première tuile d’analyse ; la dérive cardiaque comparable est recommandée.
+- Décider si la future carte GPS reste visible en permanence sur desktop.
 
-L’import FIT manuel reste disponible même si le service externe est temporairement indisponible.
+## Point à préparer pour la synchronisation
+
+L’application OAuth Intervals.icu doit être enregistrée et approuvée. L’import FIT manuel reste disponible si le service est temporairement indisponible.
 
 ## Choix reportés
 
-Les analyses futures seront choisies une par une après le MVP. Les détails de stockage, calcul d’altitude, multisession, récupération de compte, sauvegardes et dimensionnement seront traités seulement s’ils deviennent utiles.
+Les autres détails techniques seront traités seulement lorsqu’ils deviennent utiles.

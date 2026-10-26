@@ -11,11 +11,11 @@
 
 ## Connexion Intervals.icu
 
-L’utilisateur choisit « Connecter Intervals.icu » depuis son compte. Cette connexion ajoute une source sportive au compte local ; elle ne remplace pas la connexion à l’application.
+L’utilisateur choisit « Connecter Intervals.icu » depuis son compte. Cette connexion sert uniquement à importer ses activités ; elle ne remplace pas la connexion à l’application.
 
-Le bouton « Synchroniser Intervals.icu » récupère les activités nouvelles ou modifiées, télécharge les fichiers disponibles et les fait passer dans le même pipeline que les imports manuels.
+Le bouton « Synchroniser Intervals.icu » récupère les activités nouvelles ou modifiées, télécharge leurs FIT et les fait passer dans le même pipeline que les imports manuels.
 
-Le résultat précise pour chaque activité si le fichier est original ou généré par Intervals.icu.
+Le résultat indique simplement les activités ajoutées, déjà présentes ou en erreur.
 
 ## Erreurs simples
 

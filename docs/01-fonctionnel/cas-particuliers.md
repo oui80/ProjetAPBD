@@ -11,5 +11,4 @@
 | Plusieurs sessions dans un FIT | Importer la première session exploitable au MVP et signaler la limitation. |
 | Connexion Intervals.icu refusée | Revenir au compte sans enregistrer de connexion incomplète. |
 | Synchronisation indisponible | L’import FIT manuel continue de fonctionner normalement. |
-| Original non FIT | Télécharger le FIT généré par Intervals.icu si disponible. |
-| Activité non exposée par l’API | La signaler comme ignorée sans bloquer le reste. |
+| FIT indisponible via l’API | Signaler l’activité comme ignorée sans bloquer le reste. |

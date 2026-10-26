@@ -6,11 +6,11 @@ Email, mot de passe protégé, date de création et éventuelle connexion Interv
 
 ## Activité
 
-Propriétaire, nom, sport, date, durée, distance, données principales et source.
+Propriétaire, nom, sport, date, durée, distance et données principales.
 
 ## Import ou synchronisation
 
-Utilisateur, type de source, état du traitement et erreur éventuelle. Un import FIT conserve une empreinte du fichier ; une synchronisation Intervals.icu conserve l’identifiant externe de l’activité.
+Utilisateur, état du traitement et erreur éventuelle. Un import conserve une empreinte du FIT ; une synchronisation conserve aussi l’identifiant Intervals.icu afin d’éviter les doublons.
 
 ## Échantillon
 
@@ -25,5 +25,5 @@ Après le MVP, une tuile utilise les données d’une activité et produit un r�
 - Un utilisateur possède plusieurs activités.
 - Une activité appartient à un seul utilisateur.
 - Une activité peut posséder plusieurs échantillons.
-- Une activité provient d’un import local ou d’un fichier téléchargé depuis Intervals.icu.
-- La provenance indique si le fichier est original ou généré par Intervals.icu.
+- Une activité peut être créée par import manuel ou synchronisation Intervals.icu.
+- Cette différence reste technique et n’a pas besoin d’être mise en avant dans l’interface.

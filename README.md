@@ -14,7 +14,7 @@ Le MVP doit avant tout fonctionner simplement et correctement. Les analyses avan
 - Consultation des informations principales d’une activité.
 - Interface responsive, moderne et sobre.
 
-Le bouton de synchronisation récupère la liste des activités puis télécharge leur fichier d’origine lorsque l’API le permet. Un fichier FIT généré par Intervals.icu peut servir de solution de repli lorsque l’original n’est pas au format FIT.
+Le bouton de synchronisation récupère la liste des activités, télécharge un fichier FIT pour chacune d’elles puis utilise le même traitement que l’import manuel.
 
 ## Direction graphique
 
@@ -24,6 +24,8 @@ Le bouton de synchronisation récupère la liste des activités puis télécharg
 - Rouge pour les informations et courbes secondaires.
 - Style moderne, doux et ergonomique.
 - La lisibilité et le fonctionnement priment sur la direction artistique.
+
+La direction de travail est nommée **Precision Sport / Soft Lab**. Le nom d’application provisoire **PACE / LAB** reste une proposition.
 
 ## Documentation
 

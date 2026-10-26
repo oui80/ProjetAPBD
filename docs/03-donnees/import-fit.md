@@ -32,4 +32,4 @@ Le SDK JavaScript officiel Garmin est le candidat privilégié pour décoder le 
 
 ## Synchronisation Intervals.icu
 
-La synchronisation récupère d’abord la liste des activités, puis télécharge le fichier original compressé. Si ce fichier n’est pas un FIT, elle peut demander un FIT généré par Intervals.icu. Le fichier obtenu passe ensuite dans le même pipeline que l’import manuel.
+La synchronisation récupère la liste des activités, télécharge leur FIT puis utilise exactement le même pipeline que l’import manuel. L’application ne cherche pas à expliquer d’où Intervals.icu avait lui-même obtenu l’activité.

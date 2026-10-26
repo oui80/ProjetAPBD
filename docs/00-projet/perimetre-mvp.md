@@ -11,7 +11,7 @@
 - `ACT-002` — recherche, filtre simple et tri.
 - `ACT-003` — détail simple d’une activité.
 
-Le détail présente uniquement les données disponibles : date, sport, durée, distance, allure ou vitesse, dénivelé, fréquence cardiaque, puissance et source.
+Le détail présente uniquement les données disponibles : date, sport, durée, distance, allure ou vitesse, dénivelé, fréquence cardiaque et puissance.
 
 ## Hors MVP
 
@@ -24,6 +24,6 @@ La future page d’analyse doit accepter de nouvelles tuiles sans modifier toute
 
 ## Intervals.icu
 
-La connexion utilise OAuth 2.0 avec la permission de lecture des activités. Le bouton de synchronisation récupère les activités nouvelles ou modifiées, puis télécharge leur fichier d’origine compressé.
+La connexion utilise OAuth 2.0 avec la permission de lecture des activités. Le bouton récupère les activités nouvelles ou modifiées puis télécharge leur FIT depuis l’API.
 
-Si l’original est un FIT, il passe dans le pipeline d’import normal. Sinon, l’application peut demander le FIT généré par Intervals.icu. Certaines activités issues de services tiers peuvent ne pas être exposées par l’API.
+Chaque FIT passe dans le même pipeline que l’import manuel.

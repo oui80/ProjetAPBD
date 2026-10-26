@@ -12,7 +12,7 @@
 
 ## Étape 2 — Premières analyses
 
-Ajouter les premières tuiles indépendantes, par exemple allure, fréquence cardiaque, puissance ou carte GPS.
+Ajouter d’abord la dérive cardiaque à effort comparable, puis l’évolution de la mécanique de course. L’écart au profil personnel vient ensuite lorsqu’un historique suffisant existe.
 
 ## Étape 3 — Enrichissement
 

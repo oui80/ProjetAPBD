@@ -24,8 +24,7 @@
 ## Synchronisation Intervals.icu
 
 - Le bouton récupère uniquement les activités nouvelles ou modifiées.
-- Le fichier original est téléchargé lorsqu’il est disponible.
-- Un FIT généré peut être utilisé lorsque l’original n’est pas un FIT.
+- Un FIT est téléchargé et traité comme un import manuel.
 - Le bilan distingue les imports réussis, doublons, activités ignorées et erreurs.
 
 ## Détail
