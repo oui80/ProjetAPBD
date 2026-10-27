@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { ApiError } from "./api";
 import { useAuth } from "./use-auth";
 
@@ -34,10 +34,10 @@ export function AuthPage() {
   return (
     <main className="auth-layout">
       <section className="brand-panel" aria-labelledby="brand-title">
-        <a className="brand" href="/" aria-label="PACE / LAB, accueil">
+        <Link className="brand" to="/" aria-label="PACE / LAB, accueil">
           <span className="brand-mark" aria-hidden="true">P</span>
           <span>PACE / LAB</span>
-        </a>
+        </Link>
         <div>
           <p className="eyebrow">PRECISION SPORT · SOFT LAB</p>
           <h1 id="brand-title">Explorez vos activités en profondeur.</h1>

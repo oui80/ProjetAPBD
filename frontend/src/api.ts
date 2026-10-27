@@ -1,3 +1,5 @@
+import { normalizeBasePath } from "./runtime-paths";
+
 type ApiErrorBody = {
   error?: {
     code?: string;
@@ -14,9 +16,12 @@ export class ApiError extends Error {
     super(message);
   }
 }
+export function apiUrl(path: string, baseUrl = import.meta.env.BASE_URL): string {
+  return `${normalizeBasePath(baseUrl)}${path.replace(/^\/+/, "")}`;
+}
 
 export async function apiRequest<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(path, {
+  const response = await fetch(apiUrl(path), {
     ...init,
     headers: {
       ...(init?.body ? { "Content-Type": "application/json" } : {}),

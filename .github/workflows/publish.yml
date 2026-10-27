@@ -1,0 +1,99 @@
+name: Tester, publier et déployer
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+    inputs:
+      deploy:
+        description: Déployer cette version après construction
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: ihme-p14-production
+  cancel-in-progress: false
+
+env:
+  IMAGE_NAME: ghcr.io/oui80/projetapbd
+
+jobs:
+  verify:
+    name: Vérifier le projet
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: yarn
+          cache-dependency-path: yarn.lock
+      - run: corepack enable
+      - run: yarn install --frozen-lockfile
+      - run: yarn lint
+      - run: yarn test
+      - run: yarn build
+
+  publish:
+    name: Publier et déployer p14
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Valider la configuration IHME
+        env:
+          BASE_PATH: ${{ vars.IHME_BASE_PATH }}
+          DEPLOY_URL: ${{ vars.IHME_DEPLOY_URL }}
+          DEPLOY_TOKEN: ${{ secrets.IHME_DEPLOY_TOKEN }}
+        run: |
+          test "$BASE_PATH" = "/projet-apbd/" || { echo "IHME_BASE_PATH invalide"; exit 1; }
+          test "$DEPLOY_URL" = "https://node219697-ihme26.jcloud.ik-server.com/__deploy/p14" || { echo "IHME_DEPLOY_URL invalide"; exit 1; }
+          test -n "$DEPLOY_TOKEN" || { echo "IHME_DEPLOY_TOKEN absent"; exit 1; }
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Construire et publier
+        id: build
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          platforms: linux/amd64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          push: true
+          build-args: |
+            BASE_PATH=${{ vars.IHME_BASE_PATH }}
+          tags: ${{ env.IMAGE_NAME }}:${{ github.sha }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+      - name: Résumé de la version
+        env:
+          DIGEST: ${{ steps.build.outputs.digest }}
+        run: |
+          printf '### Version IHME\n\nCommit : `%s`\n\nImage : `%s@%s`\n\nLes tests sont validés. Le déploiement automatique va utiliser ce digest.\n' \
+            "$GITHUB_SHA" "$IMAGE_NAME" "$DIGEST" >> "$GITHUB_STEP_SUMMARY"
+      - name: Respecter la temporisation IHME
+        if: github.event_name == 'push' || inputs.deploy
+        run: sleep 65
+      - name: Déployer sur le serveur du cours
+        if: github.event_name == 'push' || inputs.deploy
+        env:
+          DEPLOY_URL: ${{ vars.IHME_DEPLOY_URL }}
+          DEPLOY_TOKEN: ${{ secrets.IHME_DEPLOY_TOKEN }}
+          REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DIGEST: ${{ steps.build.outputs.digest }}
+        run: python3 deploy/request.py
+      - name: Vérifier le healthcheck public
+        if: github.event_name == 'push' || inputs.deploy
+        run: |
+          curl --fail --silent --show-error --retry 5 --retry-delay 3 --retry-all-errors \
+            https://node219697-ihme26.jcloud.ik-server.com/projet-apbd/api/health \
+            | grep -q '"status":"ok"'

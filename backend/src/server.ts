@@ -14,10 +14,11 @@ const app = createApp({
   sessionTtlMs: config.sessionTtlMs,
   secureCookies: config.secureCookies,
   allowedOrigin: config.appOrigin,
+  cookiePath: config.basePath,
   serveFrontend: config.nodeEnv === "production",
 });
 
-const server = app.listen(config.port, () => {
+const server = app.listen(config.port, "0.0.0.0", () => {
   console.log(`PACE / LAB listening on port ${config.port}`);
 });
 

@@ -14,5 +14,7 @@
 | « Precision Sport / Soft Lab » est la direction graphique. | **PROPOSÉ** |
 | « PACE / LAB » est le nom de travail. | **PROPOSÉ** |
 | La dérive cardiaque comparable est la première analyse envisagée. | **PROPOSÉ** |
+| Un push sur `master` teste, publie dans GHCR et déploie automatiquement `p14` par digest. | **VALIDÉ** |
+| Le lancement manuel GitHub Actions reste disponible comme procédure de secours. | **VALIDÉ** |
 
 Les choix secondaires concernant les FIT, l’altitude, les sauvegardes ou le serveur seront pris simplement pendant l’implémentation lorsqu’ils deviennent nécessaires.

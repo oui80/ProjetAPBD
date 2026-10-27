@@ -22,6 +22,7 @@ type AppOptions = {
   sessionTtlMs: number;
   secureCookies: boolean;
   allowedOrigin?: string;
+  cookiePath?: string;
   serveFrontend?: boolean;
 };
 
@@ -43,6 +44,7 @@ function apiError(response: Response, status: number, code: string, message: str
 export function createApp(options: AppOptions): express.Express {
   const app = express();
   const auth = new AuthService(options.store, options.sessionTtlMs);
+  const cookiePath = options.cookiePath ?? "/";
 
   app.disable("x-powered-by");
   app.use(express.json({ limit: "32kb" }));
@@ -73,7 +75,7 @@ export function createApp(options: AppOptions): express.Express {
       sameSite: "lax",
       secure: options.secureCookies,
       maxAge: options.sessionTtlMs,
-      path: "/",
+      path: cookiePath,
     });
   }
 
@@ -86,19 +88,19 @@ export function createApp(options: AppOptions): express.Express {
 
     const user = await auth.session(token);
     if (!user) {
-      response.clearCookie(sessionCookieName, { path: "/" });
+      response.clearCookie(sessionCookieName, { path: cookiePath });
       apiError(response, 401, "UNAUTHENTICATED", "Session invalide ou expirée.");
       return null;
     }
     return user;
   }
 
-  app.get("/api/health", async (_request, response, next) => {
+  app.get("/api/health", async (_request, response) => {
     try {
       await options.store.healthcheck();
       response.json({ status: "ok" });
-    } catch (error) {
-      next(error);
+    } catch {
+      response.status(503).json({ status: "unavailable" });
     }
   });
 
@@ -151,7 +153,7 @@ export function createApp(options: AppOptions): express.Express {
     const token = cookieValue(request, sessionCookieName);
     try {
       if (token) await auth.logout(token);
-      response.clearCookie(sessionCookieName, { path: "/" });
+      response.clearCookie(sessionCookieName, { path: cookiePath });
       response.status(204).end();
     } catch (error) {
       next(error);

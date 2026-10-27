@@ -20,9 +20,10 @@ export function hashSessionToken(token: string): string {
 }
 
 export class AuthService {
-  private readonly dummyHash = argon2.hash("pace-lab-nonexistent-user", {
-    type: argon2.argon2id,
-  });
+  private argon2Queue = Promise.resolve();
+  private readonly dummyHash = this.runArgon2(() =>
+    argon2.hash("pace-lab-nonexistent-user", { type: argon2.argon2id }),
+  );
 
   constructor(
     private readonly store: AuthStore,
@@ -30,7 +31,9 @@ export class AuthService {
   ) {}
 
   async register(email: string, password: string): Promise<AuthResult> {
-    const passwordHash = await argon2.hash(password, { type: argon2.argon2id });
+    const passwordHash = await this.runArgon2(() =>
+      argon2.hash(password, { type: argon2.argon2id }),
+    );
     const user = await this.store.createUser(email, passwordHash);
     if (!user) throw new EmailAlreadyUsedError();
     return this.createSession(user);
@@ -39,7 +42,7 @@ export class AuthService {
   async login(email: string, password: string): Promise<AuthResult> {
     const user = await this.store.findUserByEmail(email);
     const passwordHash = user?.passwordHash ?? (await this.dummyHash);
-    const matches = await argon2.verify(passwordHash, password);
+    const matches = await this.runArgon2(() => argon2.verify(passwordHash, password));
 
     if (!user || !matches) throw new InvalidCredentialsError();
     return this.createSession(user);
@@ -59,5 +62,14 @@ export class AuthService {
     const expiresAt = new Date(Date.now() + this.sessionTtlMs);
     await this.store.createSession(user.id, hashSessionToken(token), expiresAt);
     return { user: publicUser(user), token, expiresAt };
+  }
+
+  private runArgon2<T>(operation: () => Promise<T>): Promise<T> {
+    const result = this.argon2Queue.then(operation, operation);
+    this.argon2Queue = result.then(
+      () => undefined,
+      () => undefined,
+    );
+    return result;
   }
 }

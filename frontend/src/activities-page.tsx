@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { apiRequest } from "./api";
 import { useAuth } from "./use-auth";
 
@@ -45,10 +45,10 @@ export function ActivitiesPage() {
   return (
     <div className="app-shell">
       <header className="app-header">
-        <a className="brand" href="/activities" aria-label="PACE / LAB, historique">
+        <Link className="brand" to="/activities" aria-label="PACE / LAB, historique">
           <span className="brand-mark" aria-hidden="true">P</span>
           <span>PACE / LAB</span>
-        </a>
+        </Link>
         <div className="user-menu">
           <span className="user-email">{auth.user?.email}</span>
           <button className="secondary-button" type="button" onClick={logout}>Déconnexion</button>

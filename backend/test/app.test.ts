@@ -26,6 +26,22 @@ describe("authentication API", () => {
     expect(response.body).toEqual({ status: "ok" });
   });
 
+  it("reports database unavailability with HTTP 503", async () => {
+    const store = new MemoryAuthStore();
+    store.healthcheck = async () => {
+      throw new Error("database unavailable");
+    };
+    const unavailableApp = createApp({
+      store,
+      sessionTtlMs: 60_000,
+      secureCookies: false,
+    });
+
+    const response = await request(unavailableApp).get("/api/health");
+    expect(response.status).toBe(503);
+    expect(response.body).toEqual({ status: "unavailable" });
+  });
+
   it("registers a normalized email and persists the session cookie", async () => {
     const agent = request.agent(app);
     const register = await agent
@@ -39,6 +55,27 @@ describe("authentication API", () => {
     const session = await agent.get("/api/auth/session");
     expect(session.status).toBe(200);
     expect(session.body.user.email).toBe(credentials.email);
+  });
+
+  it("scopes secure cookies to the public base path and clears the same cookie", async () => {
+    const prefixedApp = createApp({
+      store: new MemoryAuthStore(),
+      sessionTtlMs: 60_000,
+      secureCookies: true,
+      cookiePath: "/demo/",
+    });
+    const registration = await request(prefixedApp).post("/api/auth/register").send(credentials);
+    const cookie = registration.headers["set-cookie"]?.[0] ?? "";
+
+    expect(cookie).toContain("Path=/demo/");
+    expect(cookie).toContain("HttpOnly");
+    expect(cookie).toContain("Secure");
+    expect(cookie).toContain("SameSite=Lax");
+
+    const logout = await request(prefixedApp)
+      .post("/api/auth/logout")
+      .set("Cookie", cookie.split(";")[0] ?? "");
+    expect(logout.headers["set-cookie"]?.[0]).toContain("Path=/demo/");
   });
 
   it("rejects duplicate registration", async () => {

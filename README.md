@@ -51,6 +51,7 @@ La direction de travail est nommée **Precision Sport / Soft Lab**. Le nom d’a
 7. [Architecture](docs/04-technique/architecture.md)
 8. [Connexion Intervals.icu](docs/04-technique/integration-intervals-icu.md)
 9. [Décisions et roadmap](docs/05-pilotage/decisions.md)
+10. [Déploiement IHME](docs/04-technique/deploiement-ihme.md)
 
 ## Statuts
 
@@ -96,8 +97,16 @@ Vite transmet les requêtes `/api` au backend sur le port 3000.
 | `DATABASE_URL` | Connexion PostgreSQL. |
 | `PORT` | Port HTTP du backend. |
 | `APP_ORIGIN` | Origine autorisée pour les requêtes sensibles. |
+| `PUBLIC_ORIGIN` | Origine HTTPS fournie par IHME ; prioritaire sur `APP_ORIGIN`. |
+| `BASE_PATH` | Chemin public, `/` en local ou le préfixe attribué par IHME. |
 | `SESSION_TTL_HOURS` | Durée d’une session. |
 | `COOKIE_SECURE` | `true` uniquement lorsque l’application est servie en HTTPS. |
 | `NODE_ENV` | `development`, `test` ou `production`. |
 
 Ne jamais stocker de secret réel dans le dépôt.
+
+## Déploiement IHME
+
+Chaque push sur `master` lance les contrôles, publie une image `linux/amd64` dans GHCR puis déploie automatiquement cette image sur l’espace IHME `p14`. Le serveur reçoit toujours le digest SHA-256 exact, jamais `latest`, puis le workflow vérifie le healthcheck public.
+
+Un lancement manuel avec l’option `deploy` reste disponible comme procédure de secours. La configuration à effectuer est décrite dans la [procédure IHME](docs/04-technique/deploiement-ihme.md).
