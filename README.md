@@ -11,12 +11,14 @@ Les premières tranches verticales sont disponibles :
 - route privée `/activities` ;
 - import manuel d’un lot de fichiers FIT avec bilan par fichier ;
 - détection des doublons par utilisateur et historique personnel ;
+- tableau de bord avec volume, charge estimée et filtres d’historique ;
+- détail sécurisé avec trace GPS, graphiques synchronisés, tours et analyses par sport ;
 - déconnexion ;
 - migrations, tests et exécution Docker.
 
 La connexion et la synchronisation Intervals.icu ne sont pas encore implémentées.
 
-Le MVP doit avant tout fonctionner simplement et correctement. Les analyses avancées seront ajoutées plus tard sous forme de tuiles indépendantes.
+Les analyses restent descriptives, indépendantes et affichent « non calculable » lorsque les mesures nécessaires sont absentes.
 
 ## MVP validé
 
@@ -46,7 +48,7 @@ responsive sont documentés dans le [design system](docs/02-interfaces/design-sy
 2. [Fonctionnalités](docs/01-fonctionnel/fonctionnalites.md)
 3. [Authentification](docs/02-interfaces/01-authentification.md)
 4. [Historique](docs/02-interfaces/02-historique.md)
-5. [Futur écran d’analyse](docs/02-interfaces/03-analyse-activite.md)
+5. [Détail et analyses](docs/02-interfaces/03-analyse-activite.md)
 6. [Import FIT](docs/03-donnees/import-fit.md)
 7. [Architecture](docs/04-technique/architecture.md)
 8. [Connexion Intervals.icu](docs/04-technique/integration-intervals-icu.md)

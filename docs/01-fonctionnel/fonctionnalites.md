@@ -18,19 +18,22 @@ Ce document est la source de vérité fonctionnelle.
 | ACT-003 | Affichage des informations principales | **VALIDÉ** |
 | SEC-001 | Isolation des données par utilisateur | **VALIDÉ** |
 
-## Après le MVP
+## Historique et analyse
 
 | ID | Fonctionnalité | Statut |
 |---|---|---|
-| ANA-001 | Page composée de tuiles d’analyse indépendantes | **HORS MVP** |
-| ANA-002 | Graphiques interactifs | **HORS MVP** |
-| ANA-003 | Carte GPS | **HORS MVP** |
-| ANA-004 | Comparaison de tours ou intervalles | **HORS MVP** |
+| ANA-001 | Page composée de tuiles d’analyse indépendantes | **VALIDÉ** |
+| ANA-002 | Graphiques interactifs synchronisés | **VALIDÉ** |
+| ANA-003 | Carte GPS | **VALIDÉ** |
+| ANA-004 | Consultation des tours enregistrés | **VALIDÉ** |
+| ANA-005 | Charge Edwards TRIMP, ATL, CTL et fraîcheur estimée | **VALIDÉ** |
+| ANA-006 | Efficacité descriptive course, trail et vélo | **VALIDÉ** |
 | ICU-001 | Synchronisation des activités Intervals.icu | **VALIDÉ** |
 | ICU-002 | Téléchargement des FIT depuis l’API | **VALIDÉ** |
 
 ## Règles
 
 - Une métrique absente reste absente.
-- L’ajout futur d’une analyse ne doit pas modifier l’import ou l’historique.
+- Chaque analyse est indépendante et expose sa méthode et ses limites.
+- Les indicateurs de charge ne sont pas des mesures médicales de récupération.
 - Le fonctionnement FIT reste utilisable sans Intervals.icu.

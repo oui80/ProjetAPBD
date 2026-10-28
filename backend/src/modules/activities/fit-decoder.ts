@@ -1,6 +1,11 @@
 import { randomUUID } from "node:crypto";
 import { Decoder, Stream } from "@garmin/fitsdk";
-import type { ActivityImport, ActivityLap, ActivitySample } from "./activity-store.js";
+import type {
+  ActivityDevice,
+  ActivityImport,
+  ActivityLap,
+  ActivitySample,
+} from "./activity-store.js";
 
 export class InvalidFitError extends Error {}
 
@@ -32,6 +37,32 @@ function maxCadence(message: Record<string, unknown>): number | null {
       message.maxCadence ??
       message.maxSwimmingCadence ??
       message.maxPaddlesportCadence,
+  );
+}
+
+function text(value: unknown): string | null {
+  return typeof value === "string" && value.trim() ? value.trim() : null;
+}
+
+function decodedDevices(messages: Array<Record<string, unknown>>): ActivityDevice[] {
+  const devices = messages.map((device) => ({
+    manufacturer: text(device.manufacturer),
+    productName:
+      text(device.productName) ?? text(device.garminProduct) ?? text(device.faveroProduct),
+    deviceType:
+      text(device.antplusDeviceType) ??
+      text(device.bleDeviceType) ??
+      text(device.localDeviceType) ??
+      (finite(device.deviceType) === null ? null : String(device.deviceType)),
+    serialNumber:
+      typeof device.serialNumber === "number" || typeof device.serialNumber === "bigint"
+        ? String(device.serialNumber)
+        : null,
+  }));
+  return devices.filter(
+    (device, index) =>
+      Object.values(device).some((value) => value !== null) &&
+      devices.findIndex((candidate) => JSON.stringify(candidate) === JSON.stringify(device)) === index,
   );
 }
 
@@ -84,6 +115,7 @@ export function decodeFit(
       filename: input.filename,
       sha256: input.sha256,
       sport: typeof session.sport === "string" ? session.sport : null,
+      subSport: typeof session.subSport === "string" ? session.subSport : null,
       startTime,
       durationSeconds: finite(session.totalTimerTime),
       elapsedSeconds: finite(session.totalElapsedTime),
@@ -103,6 +135,9 @@ export function decodeFit(
       maximumCadenceRpm: maxCadence(sessionData),
       averagePowerWatts: finite(session.avgPower),
       maximumPowerWatts: finite(session.maxPower),
+      devices: decodedDevices(
+        (messages.deviceInfoMesgs ?? []) as Array<Record<string, unknown>>,
+      ),
       samples,
       laps,
     };

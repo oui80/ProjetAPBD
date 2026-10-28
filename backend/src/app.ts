@@ -13,12 +13,25 @@ import {
 } from "./modules/auth/auth-service.js";
 import type { AuthStore } from "./modules/auth/auth-store.js";
 import type { ActivityStore } from "./modules/activities/activity-store.js";
+import { summarizeActivities } from "./modules/activities/activity-dashboard.js";
 import { decodeFit, InvalidFitError } from "./modules/activities/fit-decoder.js";
+import { calculateFitnessEstimate } from "./modules/activities/training-load.js";
 
 const sessionCookieName = "pace_session";
 const credentialsSchema = z.object({
   email: z.string().trim().toLowerCase().email().max(254),
   password: z.string().min(12).max(128),
+});
+const activityListSchema = z.object({
+  search: z.string().trim().max(100).optional(),
+  sport: z.string().trim().max(40).optional(),
+  period: z.enum(["7", "30", "90", "all"]).default("30"),
+  sort: z.enum(["asc", "desc"]).default("desc"),
+  page: z.coerce.number().int().positive().default(1),
+  pageSize: z.coerce.number().int().min(1).max(24).default(8),
+});
+const heartRateSettingsSchema = z.object({
+  maxHeartRate: z.number().int().min(100).max(240).nullable(),
 });
 
 type AppOptions = {
@@ -197,9 +210,84 @@ export function createApp(options: AppOptions): express.Express {
   app.get("/api/activities", async (request, response, next) => {
     try {
       const user = await requireUser(request, response);
-      if (user) {
-        response.json({ activities: await options.activityStore.listActivities(user.id) });
+      if (!user) return;
+      const parsed = activityListSchema.safeParse(request.query);
+      if (!parsed.success) {
+        apiError(response, 400, "INVALID_FILTERS", "Filtres d’historique invalides.");
+        return;
       }
+      const { search, sport, period, sort, page, pageSize } = parsed.data;
+      response.json(await options.activityStore.listActivities(user.id, {
+        search: search || undefined,
+        sport: sport || undefined,
+        periodDays: period === "all" ? undefined : Number(period),
+        sort,
+        page,
+        pageSize,
+      }));
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.get("/api/activities/dashboard", async (request, response, next) => {
+    try {
+      const user = await requireUser(request, response);
+      if (!user) return;
+      const period = z.enum(["7", "30", "90", "all"]).safeParse(request.query.period ?? "30");
+      if (!period.success) {
+        apiError(response, 400, "INVALID_PERIOD", "Période invalide.");
+        return;
+      }
+      const since = period.data === "all"
+        ? null
+        : new Date(Date.now() - Number(period.data) * 86_400_000);
+      const [activities, training, maxHeartRate] = await Promise.all([
+        options.activityStore.listActivitiesForDashboard(user.id, since),
+        options.activityStore.listTrainingActivities(user.id),
+        options.activityStore.getMaxHeartRate(user.id),
+      ]);
+      response.json({
+        totals: summarizeActivities(activities),
+        fitness: calculateFitnessEstimate(training, maxHeartRate),
+        settings: { maxHeartRate },
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.put("/api/user/sport-settings", async (request, response, next) => {
+    try {
+      const user = await requireUser(request, response);
+      if (!user) return;
+      const parsed = heartRateSettingsSchema.safeParse(request.body);
+      if (!parsed.success) {
+        apiError(response, 400, "INVALID_MAX_HEART_RATE", "La FC maximale doit être comprise entre 100 et 240 bpm.");
+        return;
+      }
+      await options.activityStore.setMaxHeartRate(user.id, parsed.data.maxHeartRate);
+      response.json({ settings: parsed.data });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.get("/api/activities/:id", async (request, response, next) => {
+    try {
+      const user = await requireUser(request, response);
+      if (!user) return;
+      const id = z.string().uuid().safeParse(request.params.id);
+      if (!id.success) {
+        apiError(response, 404, "ACTIVITY_NOT_FOUND", "Activité introuvable.");
+        return;
+      }
+      const activity = await options.activityStore.getActivity(user.id, id.data);
+      if (!activity) {
+        apiError(response, 404, "ACTIVITY_NOT_FOUND", "Activité introuvable.");
+        return;
+      }
+      response.json({ activity });
     } catch (error) {
       next(error);
     }

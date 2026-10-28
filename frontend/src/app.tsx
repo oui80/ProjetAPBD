@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { ActivitiesPage } from "./activities-page";
+import { ActivityDetailPage } from "./activity-detail-page";
 import { AuthPage } from "./auth-page";
 import { useAuth } from "./use-auth";
 
@@ -19,6 +20,14 @@ export function App() {
         element={
           <PrivateRoute>
             <ActivitiesPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/activities/:id"
+        element={
+          <PrivateRoute>
+            <ActivityDetailPage />
           </PrivateRoute>
         }
       />

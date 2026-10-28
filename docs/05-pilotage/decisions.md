@@ -15,6 +15,8 @@
 | Les primitives visuelles et tokens sont mutualisés sans introduire de framework CSS. | **VALIDÉ** |
 | « PACE / LAB » est le nom de travail. | **PROPOSÉ** |
 | La dérive cardiaque comparable est la première analyse envisagée. | **PROPOSÉ** |
+| Le tableau de bord utilise Edwards TRIMP et des moyennes exponentielles ATL 7 j / CTL 42 j avec une FC maximale configurable. | **VALIDÉ** |
+| Le détail combine carte OpenStreetMap, séries FIT synchronisées, tours et analyses indépendantes par sport. | **VALIDÉ** |
 | Un push sur `master` teste, publie dans GHCR et déploie automatiquement `p14` par digest. | **VALIDÉ** |
 | Le lancement manuel GitHub Actions reste disponible comme procédure de secours. | **VALIDÉ** |
 

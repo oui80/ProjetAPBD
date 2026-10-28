@@ -9,6 +9,8 @@ import "./styles/base.css";
 import "./styles/components.css";
 import "./styles/auth.css";
 import "./styles/activities.css";
+import "leaflet/dist/leaflet.css";
+import "./styles/analysis.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

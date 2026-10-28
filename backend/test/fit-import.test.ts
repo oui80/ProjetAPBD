@@ -85,6 +85,15 @@ describe("manual FIT import", () => {
     expect(history.body.activities).toEqual([
       expect.objectContaining({ sport: "running", distanceMeters: 2000, durationSeconds: 600 }),
     ]);
+
+    const activityId = imported.body.results[0].activityId as string;
+    const detail = await agent.get(`/api/activities/${activityId}`);
+    expect(detail.status).toBe(200);
+    expect(detail.body.activity).toEqual(expect.objectContaining({
+      id: activityId,
+      samples: [expect.objectContaining({ heartRateBpm: 145, speedMps: 3.2 })],
+      laps: [expect.objectContaining({ distanceMeters: 2000 })],
+    }));
   });
 
   it("rejects an invalid FIT without storing it", async () => {
@@ -116,6 +125,8 @@ describe("manual FIT import", () => {
     expect(otherUser.body.results[0].status).toBe("imported");
     expect((await first.get("/api/activities")).body.activities).toHaveLength(1);
     expect((await second.get("/api/activities")).body.activities).toHaveLength(1);
+    const firstActivityId = firstImport.body.results[0].activityId as string;
+    expect((await second.get(`/api/activities/${firstActivityId}`)).status).toBe(404);
   });
 
   it("continues a batch when one FIT is invalid", async () => {

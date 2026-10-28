@@ -6,7 +6,7 @@ Construire une petite application web d’import et de consultation d’activit�
 
 ## Phase actuelle
 
-Implémentation du MVP autorisée. La première tranche couvre l’infrastructure, l’authentification locale et l’historique vide. Ne pas anticiper l’import FIT, OAuth Intervals.icu, les graphiques ou les analyses sans nouvelle demande.
+Le MVP couvre l’authentification locale, l’import FIT, l’historique enrichi et le détail d’une activité. Les graphiques, la carte et les premières analyses descriptives par sport sont autorisés. Ne pas anticiper la synchronisation Intervals.icu ni de nouvelles analyses sans demande.
 
 ## Stack imposée
 
@@ -21,7 +21,7 @@ Implémentation du MVP autorisée. La première tranche couvre l’infrastructur
 2. Import FIT fiable.
 3. Historique personnel des activités.
 4. Détail simple d’une activité.
-5. Plus tard, ajout progressif de tuiles d’analyse indépendantes.
+5. Ajout progressif de tuiles d’analyse indépendantes.
 
 ## Règles
 

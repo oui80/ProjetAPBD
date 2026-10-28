@@ -11,9 +11,15 @@ Afficher les activités de l’utilisateur et permettre l’import de fichiers F
 - Bouton « Synchroniser Intervals.icu » lorsque le compte est connecté.
 - Accès au compte et à la déconnexion.
 
+## Tableau de bord
+
+La période 7, 30, 90 jours ou tout l’historique pilote les totaux. La synthèse montre le nombre d’activités, la distance, la durée, le dénivelé, la répartition des sports et le volume hebdomadaire lorsque ces données existent.
+
+La forme est une estimation fondée sur Edwards TRIMP avec une FC maximale renseignée par l’utilisateur. ATL et CTL utilisent respectivement des moyennes exponentielles sur 7 et 42 jours ; la fraîcheur estimée vaut CTL − ATL. Avant 42 jours de données exploitables, la tuile indique que les données sont insuffisantes.
+
 ## Contenu
 
-Les activités sont présentées dans une liste compacte. Chaque carte contient, lorsqu’elles existent :
+Les activités sont présentées dans une grille paginée. Chaque carte contient, lorsqu’elles existent :
 
 - nom ;
 - date ;
@@ -25,7 +31,7 @@ Les activités sont présentées dans une liste compacte. Chaque carte contient,
 - fréquence cardiaque moyenne ;
 - puissance moyenne ;
 
-L’utilisateur peut rechercher une activité, filtrer par sport et trier par date.
+L’utilisateur peut rechercher une activité, filtrer par sport, choisir la période et trier par date. Les filtres sont conservés dans l’URL et au retour du détail.
 
 Le bouton Intervals.icu récupère les nouvelles activités et télécharge leurs FIT. Il affiche la dernière synchronisation et un bilan simple : importées, déjà présentes, ignorées ou en erreur.
 

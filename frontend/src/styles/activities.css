@@ -51,6 +51,96 @@
 .import-result strong { text-transform: uppercase; letter-spacing: 0.08em; }
 .import-result--imported strong { color: var(--color-accent); }
 .import-result--error strong { color: var(--color-error); }
+.period-filter { display: flex; gap: 0; margin-block: 1.5rem 3rem; border-bottom: var(--line); }
+.period-filter button {
+  padding: 0.75rem 1rem;
+  color: var(--color-muted);
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  font-size: 0.68rem;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.period-filter button.is-active { color: var(--color-ink); border-color: var(--color-accent); }
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: var(--line);
+  border-left: var(--line);
+}
+.dashboard-tile {
+  min-height: 12rem;
+  padding: clamp(1.2rem, 2vw, 2rem);
+  border-right: var(--line);
+  border-bottom: var(--line);
+  background: color-mix(in srgb, var(--color-surface) 45%, transparent);
+}
+.dashboard-tile__label {
+  display: block;
+  margin-bottom: 1.5rem;
+  color: var(--color-muted);
+  font-size: 0.6rem;
+  font-weight: 750;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.fitness-tile { grid-column: span 2; grid-row: span 2; min-height: 25rem; }
+.fitness-value, .summary-tile > strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 5rem);
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  line-height: 0.9;
+}
+.fitness-breakdown { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 2.5rem 0 1rem; }
+.fitness-breakdown div { padding-top: 0.7rem; border-top: var(--line); }
+.fitness-breakdown dt, .fitness-tile small { color: var(--color-muted); font-size: 0.6rem; text-transform: uppercase; }
+.fitness-breakdown dd { margin: 0.4rem 0 0; font-size: 1.4rem; font-weight: 750; }
+.fitness-tile p, .summary-tile p { color: var(--color-muted); font-size: 0.75rem; line-height: 1.55; }
+.fitness-insufficient > strong { font-family: var(--font-display); font-size: 1.7rem; text-transform: uppercase; }
+.fitness-settings { display: flex; gap: 1rem; align-items: end; margin-block: 1.5rem; }
+.fitness-settings label { display: grid; gap: 0.4rem; font-size: 0.65rem; text-transform: uppercase; }
+.fitness-settings input { width: 8rem; padding: 0.8rem; border: var(--line); background: var(--color-surface); }
+.summary-tile > strong { font-size: clamp(2rem, 3vw, 3.5rem); }
+.volume-tile { grid-column: span 2; min-height: 12rem; }
+.volume-bars { display: flex; height: 7rem; align-items: end; gap: clamp(0.25rem, 1vw, 0.8rem); }
+.volume-bars i { flex: 1; min-width: 4px; background: var(--color-accent); }
+.history-section { margin-top: clamp(4rem, 8vw, 8rem); }
+.history-heading { display: flex; align-items: end; justify-content: space-between; border-bottom: var(--line); }
+.history-heading h2 { margin: 0 0 1rem; font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 5rem); text-transform: uppercase; }
+.history-filters { display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 1rem; align-items: end; padding-block: 1.5rem; }
+.history-filters label { display: grid; gap: 0.4rem; }
+.history-filters label span { color: var(--color-muted); font-size: 0.58rem; font-weight: 750; letter-spacing: 0.1em; text-transform: uppercase; }
+.history-filters input, .history-filters select { min-height: 3rem; padding: 0.7rem; border: var(--line); background: var(--color-surface); }
+.activity-card-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: var(--line); border-left: var(--line); }
+.activity-card {
+  position: relative;
+  display: grid;
+  min-height: 18rem;
+  padding: clamp(1.25rem, 2.5vw, 2.5rem);
+  color: var(--color-ink);
+  border-right: var(--line);
+  border-bottom: var(--line);
+  background: color-mix(in srgb, var(--color-surface) 55%, transparent);
+  text-decoration: none;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+.activity-card::before { position: absolute; inset: 0 auto 0 0; width: 4px; background: var(--color-sage); content: ""; }
+.activity-card--running::before { background: var(--color-accent); }
+.activity-card--trail::before { background: #526b59; }
+.activity-card--cycling::before { background: #476a7b; }
+.activity-card:hover { background: var(--color-surface); transform: translateY(-2px); }
+.activity-card__top { display: flex; justify-content: space-between; gap: 1rem; color: var(--color-muted); font-size: 0.62rem; text-transform: uppercase; }
+.activity-card h3 { margin: 2rem 0; font-family: var(--font-display); font-size: clamp(1.8rem, 3vw, 3rem); line-height: 0.95; text-transform: uppercase; }
+.activity-card dl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: auto 0 1.5rem; }
+.activity-card dt { color: var(--color-muted); font-size: 0.55rem; text-transform: uppercase; }
+.activity-card dd { margin: 0.25rem 0 0; font-size: 0.82rem; font-weight: 700; }
+.activity-card__open { justify-self: end; font-size: 0.65rem; font-weight: 750; text-transform: uppercase; }
+.pagination { display: flex; align-items: center; justify-content: center; gap: 2rem; padding: 2rem; border-bottom: var(--line); }
+.pagination button { background: transparent; font-size: 0.7rem; text-transform: uppercase; }
+.pagination button:disabled { color: var(--color-muted); }
 .activity-list { border-top: var(--line); }
 .activity-row {
   display: grid;
@@ -108,7 +198,6 @@
 }
 .empty-state__detail { align-self: end; }
 .empty-state__detail p { color: var(--color-muted); font-size: 0.86rem; line-height: 1.65; }
-.empty-state__import { width: 100%; margin-block: 1rem 1.5rem; }
 .empty-state__detail span {
   display: block;
   padding-top: 1rem;
@@ -120,6 +209,8 @@
   text-transform: uppercase;
 }
 @media (max-width: 980px) {
+  .dashboard-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .history-filters { grid-template-columns: 1fr 1fr; }
   .empty-state { grid-template-columns: 5rem 1fr; }
   .empty-state__detail { grid-column: 2; max-width: 28rem; }
 }
@@ -133,6 +224,11 @@
   .empty-state__index { font-size: 3.5rem; }
   .empty-state__detail { grid-column: auto; }
   .status-panel { align-items: stretch; flex-direction: column; justify-content: center; }
+  .dashboard-grid { grid-template-columns: 1fr; }
+  .fitness-tile, .volume-tile { grid-column: auto; grid-row: auto; }
+  .history-filters { grid-template-columns: 1fr; }
+  .activity-card-grid { grid-template-columns: 1fr; }
+  .activity-card dl { grid-template-columns: repeat(2, 1fr); }
   .activity-row { grid-template-columns: 2rem 1fr; }
   .activity-row dl { grid-column: 2; grid-template-columns: 1fr; }
 }
