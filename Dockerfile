@@ -9,7 +9,7 @@ RUN apt-get update \
 COPY package.json yarn.lock ./
 COPY backend/package.json backend/package.json
 COPY frontend/package.json frontend/package.json
-RUN --mount=type=cache,target=/usr/local/share/.cache/yarn \
+RUN --mount=type=cache,id=pace-lab-yarn,target=/usr/local/share/.cache/yarn \
     yarn install --frozen-lockfile
 
 COPY . .
@@ -19,8 +19,8 @@ RUN yarn workspace @pace-lab/backend build \
 
 FROM build AS production-dependencies
 RUN rm -rf node_modules backend/node_modules frontend/node_modules
-RUN --mount=type=cache,target=/usr/local/share/.cache/yarn \
-    yarn install --frozen-lockfile --production=true --offline
+RUN --mount=type=cache,id=pace-lab-yarn,target=/usr/local/share/.cache/yarn \
+    yarn install --frozen-lockfile --production=true
 
 FROM node:20-bookworm-slim AS runtime
 
