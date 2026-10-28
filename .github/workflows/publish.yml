@@ -36,7 +36,8 @@ jobs:
       - run: yarn install --frozen-lockfile
       - run: yarn lint
       - run: yarn test
-      - run: yarn build
+      # La compilation de production est effectuée une seule fois dans Docker,
+      # avec le BASE_PATH IHME, avant publication.
 
   publish:
     name: Publier et déployer p14

@@ -7,7 +7,8 @@ Permettre de créer librement un compte ou de se connecter rapidement.
 ## Contenu
 
 - Nom et logo de l’application.
-- Titre court : « Explorez vos activités en profondeur ».
+- Titre éditorial : « Le sport. En détail. ».
+- Photographie sportive majeure, optimisée et locale.
 - Choix entre connexion et création de compte.
 - Email et mot de passe.
 - Bouton principal adapté à l’action.
@@ -31,4 +32,4 @@ Le formulaire occupe la largeur disponible avec des marges simples. Toutes les a
 - Création de compte et connexion compréhensibles sans aide.
 - Navigation au clavier possible.
 - États de chargement et d’erreur visibles.
-- Présentation conforme au fond blanc, texte noir et accent bleu clair.
+- Présentation conforme à la direction « Sport Editorial — Performance Lab ».

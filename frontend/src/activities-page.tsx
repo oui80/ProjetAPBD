@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { apiRequest } from "./api";
+import { Brand, Button, EditorialLabel } from "./ui";
 import { useAuth } from "./use-auth";
 
 type ActivitiesResponse = { activities: unknown[] };
@@ -44,47 +45,38 @@ export function ActivitiesPage() {
 
   return (
     <div className="app-shell">
-      <header className="app-header">
-        <Link className="brand" to="/activities" aria-label="PACE / LAB, historique">
-          <span className="brand-mark" aria-hidden="true">P</span>
-          <span>PACE / LAB</span>
-        </Link>
+      <header className="app-header page-container">
+        <Brand to="/activities" />
         <div className="user-menu">
           <span className="user-email">{auth.user?.email}</span>
-          <button className="secondary-button" type="button" onClick={logout}>Déconnexion</button>
+          <Button variant="text" type="button" onClick={logout} showArrow>Déconnexion</Button>
         </div>
       </header>
 
-      <main className="activities-content">
-        <div className="page-heading">
-          <div>
-            <p className="eyebrow">VOTRE ESPACE</p>
-            <h1>Mes activités</h1>
-            <p>Retrouvez ici toutes vos séances importées.</p>
-          </div>
-          <button className="primary-button" type="button" disabled title="Disponible prochainement">
-            Importer un FIT
-          </button>
-        </div>
-
-        {loading && <div className="status-card" role="status">Chargement de l’historique…</div>}
+      <main className="activities-content page-container">
+        {loading && <div className="status-panel" role="status">Chargement de l’historique…</div>}
 
         {error && (
-          <div className="status-card error-state" role="alert">
+          <div className="status-panel status-panel--error" role="alert">
             <p>{error}</p>
-            <button className="secondary-button" type="button" onClick={loadActivities}>Réessayer</button>
+            <Button variant="secondary" type="button" onClick={loadActivities} showArrow>Réessayer</Button>
           </div>
         )}
 
         {!loading && !error && (
           <section className="empty-state" aria-labelledby="empty-title">
-            <div className="empty-icon" aria-hidden="true">↗</div>
-            <p className="eyebrow">PRÊT POUR LA PREMIÈRE ACTIVITÉ</p>
-            <h2 id="empty-title">Votre historique est vide</h2>
-            <p>
-              L’import de fichiers FIT et la synchronisation Intervals.icu arriveront lors de la prochaine étape.
-            </p>
-            <span className="coming-soon">Import disponible prochainement</span>
+            <div className="empty-state__index" aria-hidden="true">00</div>
+            <div className="empty-state__content">
+              <EditorialLabel>Point de départ</EditorialLabel>
+              <h2 id="empty-title">Aucune activité.<br />Pour le moment.</h2>
+            </div>
+            <div className="empty-state__detail">
+              <p>
+                Votre historique accueillera ici vos séances. L’import FIT et la synchronisation
+                Intervals.icu arriveront lors d’une prochaine étape.
+              </p>
+              <span>Historique vide — prêt à recevoir vos données</span>
+            </div>
           </section>
         )}
       </main>

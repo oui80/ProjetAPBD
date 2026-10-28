@@ -10,10 +10,20 @@
   ],
   "scripts": {
     "build": "yarn workspace @pace-lab/backend build && yarn workspace @pace-lab/frontend build",
+    "build:bounded": "NODE_OPTIONS=\"${NODE_OPTIONS:---max-old-space-size=1024}\" yarn build",
+    "build:backend": "yarn workspace @pace-lab/backend build",
+    "build:frontend": "yarn workspace @pace-lab/frontend build",
     "dev:backend": "yarn workspace @pace-lab/backend dev",
     "dev:frontend": "yarn workspace @pace-lab/frontend dev",
     "lint": "eslint backend/src backend/test frontend/src",
-    "test": "yarn workspace @pace-lab/backend test && yarn workspace @pace-lab/frontend test"
+    "lint:backend": "eslint backend/src backend/test",
+    "lint:frontend": "eslint frontend/src",
+    "lint:files": "eslint",
+    "test": "yarn workspace @pace-lab/backend test && yarn workspace @pace-lab/frontend test",
+    "test:backend": "yarn workspace @pace-lab/backend test --maxWorkers=1 --minWorkers=1",
+    "test:frontend": "yarn workspace @pace-lab/frontend test --maxWorkers=1 --minWorkers=1",
+    "typecheck:backend": "yarn workspace @pace-lab/backend typecheck",
+    "typecheck:frontend": "yarn workspace @pace-lab/frontend typecheck"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

@@ -4,7 +4,11 @@ import { BrowserRouter } from "react-router-dom";
 import { App } from "./app";
 import { AuthProvider } from "./auth-provider";
 import { routerBasename } from "./runtime-paths";
-import "./styles.css";
+import "./styles/tokens.css";
+import "./styles/base.css";
+import "./styles/components.css";
+import "./styles/auth.css";
+import "./styles/activities.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

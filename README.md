@@ -31,14 +31,13 @@ Le bouton de synchronisation récupère la liste des activités, télécharge un
 
 ## Direction graphique
 
-- Fond blanc.
-- Texte noir.
-- Bleu clair pour les informations et courbes principales.
-- Rouge pour les informations et courbes secondaires.
-- Style moderne, doux et ergonomique.
-- La lisibilité et le fonctionnement priment sur la direction artistique.
+La direction validée est **Sport Editorial — Performance Lab** : typographie monumentale,
+composition asymétrique, photographie sportive expressive, noir et blanc cassé dominants et
+accent orange ponctuel. L’interface conserve une exigence de lisibilité, d’accessibilité et de
+sobriété fonctionnelle ; elle évite les codes du dashboard SaaS générique.
 
-La direction de travail est nommée **Precision Sport / Soft Lab**. Le nom d’application provisoire **PACE / LAB** reste une proposition.
+Le nom d’application **PACE / LAB** reste le nom de travail. Les tokens, composants et règles
+responsive sont documentés dans le [design system](docs/02-interfaces/design-system.md).
 
 ## Documentation
 
