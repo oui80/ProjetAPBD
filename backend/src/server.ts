@@ -3,6 +3,7 @@ import { readConfig } from "./config.js";
 import { runMigrations } from "./db/migrate.js";
 import { createPool } from "./db/pool.js";
 import { PostgresAuthStore } from "./modules/auth/postgres-auth-store.js";
+import { PostgresActivityStore } from "./modules/activities/postgres-activity-store.js";
 
 const config = readConfig();
 const pool = createPool(config.databaseUrl);
@@ -11,6 +12,7 @@ await runMigrations(pool);
 
 const app = createApp({
   store: new PostgresAuthStore(pool),
+  activityStore: new PostgresActivityStore(pool),
   sessionTtlMs: config.sessionTtlMs,
   secureCookies: config.secureCookies,
   allowedOrigin: config.appOrigin,

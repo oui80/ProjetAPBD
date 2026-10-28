@@ -6,8 +6,10 @@ import { MemoryAuthStore } from "./memory-auth-store.js";
 const credentials = { email: "runner@example.com", password: "correct horse battery staple" };
 
 function testApp() {
+  const store = new MemoryAuthStore();
   return createApp({
-    store: new MemoryAuthStore(),
+    store,
+    activityStore: store,
     sessionTtlMs: 60_000,
     secureCookies: false,
   });
@@ -33,6 +35,7 @@ describe("authentication API", () => {
     };
     const unavailableApp = createApp({
       store,
+      activityStore: store,
       sessionTtlMs: 60_000,
       secureCookies: false,
     });
@@ -58,8 +61,10 @@ describe("authentication API", () => {
   });
 
   it("scopes secure cookies to the public base path and clears the same cookie", async () => {
+    const store = new MemoryAuthStore();
     const prefixedApp = createApp({
-      store: new MemoryAuthStore(),
+      store,
+      activityStore: store,
       sessionTtlMs: 60_000,
       secureCookies: true,
       cookiePath: "/demo/",
@@ -119,8 +124,10 @@ describe("authentication API", () => {
   });
 
   it("rejects a sensitive request from another origin", async () => {
+    const store = new MemoryAuthStore();
     const protectedApp = createApp({
-      store: new MemoryAuthStore(),
+      store,
+      activityStore: store,
       sessionTtlMs: 60_000,
       secureCookies: false,
       allowedOrigin: "https://pace.test",

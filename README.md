@@ -4,16 +4,17 @@ Petit projet web personnel permettant à une vingtaine d’utilisateurs d’impo
 
 ## État de l’implémentation
 
-La première tranche verticale est disponible :
+Les premières tranches verticales sont disponibles :
 
 - inscription et connexion locales ;
 - sessions persistantes en PostgreSQL ;
 - route privée `/activities` ;
-- historique vide responsive ;
+- import manuel d’un lot de fichiers FIT avec bilan par fichier ;
+- détection des doublons par utilisateur et historique personnel ;
 - déconnexion ;
 - migrations, tests et exécution Docker.
 
-L’import FIT et la connexion Intervals.icu ne sont pas encore implémentés.
+La connexion et la synchronisation Intervals.icu ne sont pas encore implémentées.
 
 Le MVP doit avant tout fonctionner simplement et correctement. Les analyses avancées seront ajoutées plus tard sous forme de tuiles indépendantes.
 

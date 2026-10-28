@@ -28,6 +28,14 @@ Une donnée manquante reste absente. Le MVP ne cherche pas à corriger ou recons
 - Pour un FIT multisession, seule la première session exploitable est importée au MVP.
 - Le fichier original peut être conservé ou supprimé selon la solution la plus simple lors de l’implémentation.
 
+## Décisions d’implémentation
+
+- Le backend utilise le SDK officiel `@garmin/fitsdk` et exige un FIT dont l’intégrité CRC est valide.
+- L’upload manuel accepte au maximum 10 fichiers de 20 Mo chacun en mémoire ; le fichier original n’est pas conservé.
+- L’empreinte SHA-256 est unique par utilisateur. Un même fichier peut donc appartenir à deux utilisateurs différents.
+- Chaque fichier est enregistré dans sa propre transaction PostgreSQL avec ses tours et ses échantillons.
+- L’allure moyenne est calculée uniquement lorsqu’une vitesse moyenne FIT strictement positive existe ; toutes les autres mesures absentes restent `NULL`.
+
 Le SDK JavaScript officiel Garmin est le candidat privilégié pour décoder le format : [Garmin FIT SDK](https://developer.garmin.com/fit/get-the-sdk/).
 
 ## Synchronisation Intervals.icu

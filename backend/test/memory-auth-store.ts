@@ -1,9 +1,15 @@
 import { randomUUID } from "node:crypto";
 import type { AuthStore, User } from "../src/modules/auth/auth-store.js";
+import type {
+  ActivityImport,
+  ActivityStore,
+  ActivitySummary,
+} from "../src/modules/activities/activity-store.js";
 
-export class MemoryAuthStore implements AuthStore {
+export class MemoryAuthStore implements AuthStore, ActivityStore {
   private readonly users = new Map<string, User>();
   private readonly sessions = new Map<string, { userId: string; expiresAt: Date }>();
+  private readonly activities: ActivityImport[] = [];
 
   async createUser(email: string, passwordHash: string): Promise<User | null> {
     if (this.users.has(email)) return null;
@@ -31,4 +37,17 @@ export class MemoryAuthStore implements AuthStore {
   }
 
   async healthcheck(): Promise<void> {}
+
+  async listActivities(userId: string): Promise<ActivitySummary[]> {
+    return this.activities.filter((activity) => activity.userId === userId);
+  }
+
+  async createActivity(activity: ActivityImport): Promise<boolean> {
+    const duplicate = this.activities.some(
+      (existing) => existing.userId === activity.userId && existing.sha256 === activity.sha256,
+    );
+    if (duplicate) return false;
+    this.activities.push(activity);
+    return true;
+  }
 }

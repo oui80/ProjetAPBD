@@ -1,8 +1,10 @@
+import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import express, { type NextFunction, type Request, type Response } from "express";
 import { rateLimit } from "express-rate-limit";
+import multer from "multer";
 import { z } from "zod";
 import {
   AuthService,
@@ -10,6 +12,8 @@ import {
   InvalidCredentialsError,
 } from "./modules/auth/auth-service.js";
 import type { AuthStore } from "./modules/auth/auth-store.js";
+import type { ActivityStore } from "./modules/activities/activity-store.js";
+import { decodeFit, InvalidFitError } from "./modules/activities/fit-decoder.js";
 
 const sessionCookieName = "pace_session";
 const credentialsSchema = z.object({
@@ -19,6 +23,7 @@ const credentialsSchema = z.object({
 
 type AppOptions = {
   store: AuthStore;
+  activityStore: ActivityStore;
   sessionTtlMs: number;
   secureCookies: boolean;
   allowedOrigin?: string;
@@ -45,6 +50,10 @@ export function createApp(options: AppOptions): express.Express {
   const app = express();
   const auth = new AuthService(options.store, options.sessionTtlMs);
   const cookiePath = options.cookiePath ?? "/";
+  const fitUpload = multer({
+    storage: multer.memoryStorage(),
+    limits: { fileSize: 20 * 1024 * 1024, files: 10, fields: 0 },
+  });
 
   app.disable("x-powered-by");
   app.use(express.json({ limit: "32kb" }));
@@ -93,6 +102,22 @@ export function createApp(options: AppOptions): express.Express {
       return null;
     }
     return user;
+  }
+
+  async function requireUserMiddleware(
+    request: Request,
+    response: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const user = await requireUser(request, response);
+      if (user) {
+        response.locals.user = user;
+        next();
+      }
+    } catch (error) {
+      next(error);
+    }
   }
 
   app.get("/api/health", async (_request, response) => {
@@ -172,11 +197,77 @@ export function createApp(options: AppOptions): express.Express {
   app.get("/api/activities", async (request, response, next) => {
     try {
       const user = await requireUser(request, response);
-      if (user) response.json({ activities: [] });
+      if (user) {
+        response.json({ activities: await options.activityStore.listActivities(user.id) });
+      }
     } catch (error) {
       next(error);
     }
   });
+
+  app.post(
+    "/api/imports/fit",
+    requireUserMiddleware,
+    fitUpload.array("files", 10),
+    async (request, response) => {
+      const files = (request.files as Express.Multer.File[] | undefined) ?? [];
+      if (files.length === 0) {
+        apiError(response, 400, "NO_FILES", "Sélectionnez au moins un fichier FIT.");
+        return;
+      }
+
+      const user = response.locals.user as { id: string };
+      const results = [];
+      for (const file of files) {
+        if (!file.originalname.toLowerCase().endsWith(".fit")) {
+          results.push({
+            filename: file.originalname,
+            status: "error",
+            message: "Extension .fit requise.",
+          });
+          continue;
+        }
+        if (![
+          "application/octet-stream",
+          "application/vnd.ant.fit",
+          "application/fit",
+          "application/x-fit",
+        ].includes(file.mimetype)) {
+          results.push({
+            filename: file.originalname,
+            status: "error",
+            message: "Type de fichier FIT invalide.",
+          });
+          continue;
+        }
+
+        try {
+          const sha256 = createHash("sha256").update(file.buffer).digest("hex");
+          const activity = decodeFit(file.buffer, {
+            userId: user.id,
+            filename: file.originalname,
+            sha256,
+          });
+          const created = await options.activityStore.createActivity(activity);
+          results.push({
+            filename: file.originalname,
+            status: created ? "imported" : "duplicate",
+            ...(created ? { activityId: activity.id } : {}),
+          });
+        } catch (error) {
+          results.push({
+            filename: file.originalname,
+            status: "error",
+            message: error instanceof InvalidFitError
+              ? "Fichier FIT invalide ou corrompu."
+              : "Impossible d’enregistrer ce fichier.",
+          });
+        }
+      }
+
+      response.status(200).json({ results });
+    },
+  );
 
   if (options.serveFrontend) {
     const frontendDirectory = fileURLToPath(new URL("../../frontend/dist", import.meta.url));
@@ -195,6 +286,18 @@ export function createApp(options: AppOptions): express.Express {
 
   app.use((error: unknown, _request: Request, response: Response, _next: NextFunction) => {
     void _next;
+    if (error instanceof multer.MulterError) {
+      const tooLarge = error.code === "LIMIT_FILE_SIZE";
+      apiError(
+        response,
+        tooLarge ? 413 : 400,
+        tooLarge ? "FILE_TOO_LARGE" : "INVALID_UPLOAD",
+        tooLarge
+          ? "Chaque fichier FIT doit peser au maximum 20 Mo."
+          : "Envoi de fichiers invalide.",
+      );
+      return;
+    }
     console.error("Unhandled request error", error instanceof Error ? error.message : error);
     apiError(response, 500, "INTERNAL_ERROR", "Une erreur interne est survenue.");
   });

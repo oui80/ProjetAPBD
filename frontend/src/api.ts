@@ -21,10 +21,11 @@ export function apiUrl(path: string, baseUrl = import.meta.env.BASE_URL): string
 }
 
 export async function apiRequest<T>(path: string, init?: RequestInit): Promise<T> {
+  const hasJsonBody = init?.body && !(init.body instanceof FormData);
   const response = await fetch(apiUrl(path), {
     ...init,
     headers: {
-      ...(init?.body ? { "Content-Type": "application/json" } : {}),
+      ...(hasJsonBody ? { "Content-Type": "application/json" } : {}),
       ...init?.headers,
     },
     credentials: "same-origin",

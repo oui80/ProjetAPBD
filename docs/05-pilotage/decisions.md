@@ -10,6 +10,7 @@
 | La direction artistique reste compatible avec la lisibilité, l’accessibilité et les usages fonctionnels. | **VALIDÉ** |
 | Intervals.icu est le service de synchronisation. | **VALIDÉ** |
 | Le bouton importe directement les FIT fournis par l’API. | **VALIDÉ** |
+| L’import FIT manuel utilise le SDK Garmin, une empreinte SHA-256 par utilisateur et une transaction par fichier. | **VALIDÉ** |
 | L’architecture reste un monolithe React, Express et PostgreSQL. | **PROPOSÉ** |
 | Les primitives visuelles et tokens sont mutualisés sans introduire de framework CSS. | **VALIDÉ** |
 | « PACE / LAB » est le nom de travail. | **PROPOSÉ** |
