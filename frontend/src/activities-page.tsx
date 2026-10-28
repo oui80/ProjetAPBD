@@ -164,6 +164,15 @@ export function ActivitiesPage() {
               <p>
                 Importez un ou plusieurs fichiers FIT pour retrouver ici vos séances.
               </p>
+              <Button
+                className="empty-state__import"
+                type="button"
+                onClick={() => fileInput.current?.click()}
+                disabled={uploading}
+                showArrow
+              >
+                {uploading ? "Import en cours…" : "Choisir mes fichiers FIT"}
+              </Button>
               <span>Historique vide — prêt à recevoir vos données</span>
             </div>
           </section>

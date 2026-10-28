@@ -108,6 +108,7 @@
 }
 .empty-state__detail { align-self: end; }
 .empty-state__detail p { color: var(--color-muted); font-size: 0.86rem; line-height: 1.65; }
+.empty-state__import { width: 100%; margin-block: 1rem 1.5rem; }
 .empty-state__detail span {
   display: block;
   padding-top: 1rem;
