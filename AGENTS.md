@@ -34,7 +34,14 @@ Implémentation du MVP autorisée. La première tranche couvre l’infrastructur
 - Utiliser les sessions opaques stockées en PostgreSQL ; ne pas remplacer ce choix par des JWT sans décision explicite.
 - Protéger toutes les ressources privées côté backend, même si le frontend masque déjà la route.
 - Utiliser Yarn et conserver `yarn.lock` à jour.
-- Exécuter `yarn lint`, `yarn test` et `yarn build` après une modification applicative.
+- Appliquer une validation proportionnelle aux fichiers modifiés :
+  - CSS ou modification visuelle : aucun build ou test complet ; contrôle visuel ponctuel seulement si utile.
+  - React/TypeScript frontend : lint ciblé, puis typecheck ou test frontend concerné si nécessaire.
+  - Backend : lint, typecheck et tests ciblés du comportement modifié ; aucune compilation frontend inutile.
+  - Documentation : vérification légère du diff uniquement.
+  - Modification critique ou préparation au déploiement : lint, tests complets, build production, base path `/projet-apbd/` et Docker si pertinent.
+- Ne jamais considérer un contrôle non exécuté comme réussi ; réutiliser un résultat tant que ses fichiers d’entrée n’ont pas changé.
+- Exécuter les tâches lourdes séquentiellement et arrêter tout serveur ou navigateur temporaire après usage.
 - Les migrations SQL versionnées sont dans `database/migrations/` et s’exécutent au démarrage.
 
 ## Structure
@@ -43,3 +50,13 @@ Implémentation du MVP autorisée. La première tranche couvre l’infrastructur
 - `backend/` : Express, TypeScript, API et accès PostgreSQL.
 - `database/migrations/` : migrations SQL versionnées.
 - `docs/` : décisions fonctionnelles et techniques.
+
+## Sobriété des validations
+
+- Ne pas lancer automatiquement une batterie complète après une petite modification.
+- Ne pas construire Docker pour une modification CSS ou React isolée.
+- Privilégier les scripts ciblés (`lint:frontend`, `lint:backend`, `test:frontend`, `test:backend`, `typecheck:*`).
+- Éviter les installations de dépendances et les captures navigateur répétées.
+- Ne pas exécuter plusieurs compilations, suites de tests, Vite ou navigateurs headless simultanément.
+- Les tâches coûteuses peuvent utiliser `NODE_OPTIONS=--max-old-space-size=1024`; cette limite reste configurable et ne doit pas provoquer d’échec mémoire.
+- Expliquer brièvement les contrôles exécutés et ceux volontairement évités dans chaque intervention.
